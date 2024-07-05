@@ -1,6 +1,5 @@
 import adapter from '@sveltejs/adapter-cloudflare-workers';
 import { vitePreprocess } from '@sveltejs/kit/vite';
-import wasm from 'vite-plugin-wasm';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -10,12 +9,7 @@ const config = {
 
 	kit: {
 		adapter: adapter(),
-		vite: {
-			plugins: [wasm()],
-			resolve: {
-				extensions: ['.js', '.ts', '.py']
-			}
-		}
+		moduleExtensions: [".js", ".ts", ".py"],
 	}
 };
 
