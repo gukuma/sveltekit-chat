@@ -21,7 +21,7 @@ export const POST = async ({ request }) => {
         async start(controller) {
             const chat = new ChatOpenAI({
                 openAIApiKey: OPENAI_KEY,
-                modelName: "gpt-4",
+                modelName: "gpt-3.5-turbo",
                 streaming: true,
                 callbackManager: CallbackManager.fromHandlers({
                     handleLLMNewToken: async (token: string) => controller.enqueue(token),
@@ -29,7 +29,16 @@ export const POST = async ({ request }) => {
             });
 
             await chat.call([
-                new SystemChatMessage("You are a helpful assistant. Limit prose. Answer with markdown where appropiate."),
+                new SystemChatMessage(`Act as a user research designer, 
+                take the following user data and generate a persona similar, 
+                extrapolate persona facts about this type of user, be as specific as possible.
+                Return response in the following format: 
+                NOTHING ELSE, only in the format between the ---.
+                Example: 
+                ---
+                
+                ---
+                `),
                 new AIChatMessage("Hello! How can I help you today?"),
                 ...body.chats.map(chat => chat.role == "user"
                     ? new HumanChatMessage(chat.content)
